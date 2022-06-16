@@ -1,20 +1,3 @@
-/**
- * #7DaysOfCode - Java 1/7: Consumir uma API de filmes @Alura
- * 
- * No desafio de hoje, você vai fazer o seu código Java rodar e consumir a API do IMDB! 
- * Seu objetivo será imprimir os resultados de uma busca na linha de comando.
- * Explicando melhor, você vai usar essa API para pesquisar os top 250 filmes 
- * e imprimir o JSON correspondente no console da sua IDE.
- * 
- * Crie o código Java que executará uma requisição HTTP do tipo GET. 
- * Você pode usar o pacote java.net.http e as classes HttpRequest, HttpClient e HttpResponse, 
- * além da classe URI.
- * 
- * Executar a requisição e pegar a resposta (o JSON)
- * 
- * Imprimir o corpo da resposta no console
- */
-
 package br.com.sevendaysofcode.meuprojeto;
 
 import java.net.URI;
