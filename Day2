@@ -1,0 +1,125 @@
+package br.com.sevendaysofcode.meuprojeto;
+
+import static br.com.sevendaysofcode.meuprojeto.ConverteJson.*;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.util.List;
+
+public class Catalogo {
+
+	public static void main(String[] args) throws Exception {
+
+		String apiKey = "insert your apiKey";
+		URI apiIMDB = URI.create("https://imdb-api.com/en/API/Top250Movies/" + apiKey);
+
+		HttpClient client = HttpClient.newHttpClient();
+		HttpRequest request = HttpRequest.newBuilder().uri(apiIMDB).build();
+
+		HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+		String json = response.body();
+
+		System.out.println("Resposta: " + json + "\n");
+		
+		List<String> titles = parseJson(json, Parameter.TITLE);
+		System.out.println("Quantidade: " + titles.size() + " -> Títulos.");
+		titles.forEach(System.out::println);
+		
+		System.out.println("-------------------------------------------");
+		
+		List<String> years = parseJson(json, Parameter.YEAR);
+		System.out.println("Quantidade: " + years.size() + " -> Anos.");
+		years.forEach(System.out::println);
+		
+		System.out.println("-------------------------------------------");
+		
+		List<String> urlImages = parseJson(json, Parameter.IMAGE);
+		System.out.println("Quantidade: " + urlImages.size() + " -> URLs Img.");
+		urlImages.forEach(System.out::println);
+		
+		System.out.println("-------------------------------------------");
+
+		List<String> imdbRatings = parseJson(json, Parameter.IMDB_RATING);
+		System.out.println("Quantidade: " + imdbRatings.size() + " -> Ratings.");
+		imdbRatings.forEach(System.out::println);
+
+		System.out.println("-------------------------------------------");
+
+		List<String> ranks = parseJson(json, Parameter.RANK);
+		System.out.println("Quantidade: " + ranks.size() + " -> Ranks.");
+		ranks.forEach(System.out::println);
+		
+		System.out.println("-------------------------------------------");
+
+		List<String> ids = parseJson(json, Parameter.IDS);
+		System.out.println("Quantidade: " + ids.size() + " -> IDs.");
+		ids.forEach(System.out::println);
+
+	}
+}
+_________________________________________________________________________________________________________________
+
+package br.com.sevendaysofcode.meuprojeto;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class ConverteJson {
+	
+	public static List<String> parseJson(String json, Parameter p) {
+		String x = "                                                                                               ";
+		List<String> lista = new ArrayList<>();
+		String[] moviesArray = json.split(p.retornar());
+		for (int i = 1; i < moviesArray.length; i++) {
+			lista.add(moviesArray[i].replace("\",\"",x+x+x).substring(0, 236).strip().toString());
+		}
+		return lista;
+	}
+}
+_________________________________________________________________________________________________________________
+
+package br.com.sevendaysofcode.meuprojeto;
+
+public enum Parameter {
+
+	TITLE {
+		@Override
+		public String retornar() {
+			return "title\":\"";
+		}
+	},
+	IMAGE {
+		@Override
+		public String retornar() {
+			return "image\":\"";
+		}
+	},
+	YEAR {
+		@Override
+		public String retornar() {
+			return "year\":\"";
+		}
+	},
+	IMDB_RATING {
+		@Override
+		public String retornar() {
+			return "imDbRating\":\"";
+		}
+	},
+	RANK {
+		@Override
+		public String retornar() {
+			return "rank\":\"";
+		}
+	},
+	IDS {
+		@Override
+		public String retornar() {
+			return "id\":\"";
+		}
+	};
+
+	public abstract String retornar();
+
+}
